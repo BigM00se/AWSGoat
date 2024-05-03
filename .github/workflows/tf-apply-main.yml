@@ -90,7 +90,7 @@ jobs:
         --log-format json  \
         --report-formats all  \
         --report-name findings  \
-        --ics-config "DH CIS AWS"  \
+        --ics-config "DH_CIS_AWS"  \
         --no-fail  \
         --save-report
 
