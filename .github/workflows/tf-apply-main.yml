@@ -1,6 +1,5 @@
 name: 'Terraform Apply'
 
-
 on:
   workflow_dispatch:
     inputs:
@@ -69,6 +68,8 @@ jobs:
       run: | 
         cd modules/${{ github.event.inputs.module }}
         terraform plan -input=false
+        terraform plan -out tf.plan
+        terraform show -json tf.plan > plan.json
       continue-on-error: false
       
     - name: Terraform Plan Status
@@ -85,7 +86,7 @@ jobs:
         ./mimics scan /home/runner/work/AWSGoat/AWSGoat/modules/${{ github.event.inputs.module }}  \
         --api-key ${{ secrets.ics_api_key }}  \
         --base-url ${{ secrets.ics_base_url }}  \
-        --scan-target "DH Terraform"  \
+        --scan-target "dh_terraform"  \
         --no-verify  \
         --log-format json  \
         --report-formats all  \
@@ -100,7 +101,7 @@ jobs:
       with:
         name: findings-archive
         path: findings.zip
-
+    
     - name: Upload the sarif report to Github Advanced Security
       if: always()
       uses: github/codeql-action/upload-sarif@v2
